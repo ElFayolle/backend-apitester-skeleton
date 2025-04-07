@@ -23,7 +23,7 @@ def alive():
 
 @app.route('/api/associations', methods=['GET'])
 def get_associations():
-    return jsonify(associations_df['id'].tolist()), 200
+    return jsonify(associations_df['nom'].tolist()), 200
 
 @app.route('/api/association/<int:id>', methods=['GET'])
 def get_association(id):
@@ -33,7 +33,27 @@ def get_association(id):
     return jsonify(assoc.iloc[0].to_dict()), 200
 
 
+@app.route('/api/evenements', methods=['GET'])
+def get_evenements():
+   return jsonify(evenements_df['id'].tolist()), 200
 
+
+@app.route('/api/evenement/<int:id>', methods=['GET'])
+def get_evenement(id):
+    event = evenements_df[evenements_df['id'] == id]
+    if event.empty:
+        return jsonify({"error": "Event not found"}), 404
+    return jsonify(event.iloc[0].to_dict()), 200
+
+@app.route('/api/association/<int:id>/evenements', methods=['GET'])
+def get_evenements_by_association(id):
+    events = evenements_df[evenements_df['association_id'] == id]
+    return jsonify(events.to_dict(orient='records')), 200
+
+@app.route('/api/associations/type/<asso>', methods=['GET'])
+def get_associations_by_type(asso):
+    filtered = associations_df[associations_df['type'].str.lower() == type.lower()]
+    return jsonify(filtered.to_dict(orient='records')), 200
 
 
 
