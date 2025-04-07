@@ -52,7 +52,7 @@ def get_evenements_by_association(id):
 
 @app.route('/api/associations/type/<asso>', methods=['GET'])
 def get_associations_by_type(asso):
-    filtered = associations_df[associations_df['type'].str.lower() == type.lower()]
+    filtered = associations_df[associations_df['type'].str.lower() == asso.lower()]
     return jsonify(filtered.to_dict(orient='records')), 200
 
 
